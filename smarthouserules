@@ -1,0 +1,127 @@
+Rule Set 1 – Lighting Control
+action(turn_on_living_room_lights_70) :-
+    motion_detected(living_room),
+    time_between(sunset, sunrise),
+    ambient_light(living_room, Lux),
+    Lux < 50.
+
+action(turn_off_lights(Room)) :-
+    no_motion(Room, 10),
+    lights_on(Room).
+
+action(increase_bedroom_lights_50_over_5min) :-
+    time(6, 30),
+    weekday,
+    motion_detected(bedroom).
+
+action(dim_living_room_lights_30) :-
+    tv_on(living_room),
+    lights_brightness(living_room, 100).
+
+action(flash_all_lights_red_and_alert) :-
+    security_alarm_triggered.
+
+Rule Set 2 – Climate & HVAC Control
+action(set_ac_22) :-
+    indoor_temperature(Tin),
+    Tin > 24,
+    outdoor_temperature(Tout),
+    Tout < Tin,
+    windows_closed.
+
+action(set_heating_21) :-
+    indoor_temperature(Tin),
+    Tin < 18,
+    someone_home.
+
+action(activate_dehumidifier) :-
+    humidity(H),
+    H > 70,
+    indoor_temperature(T),
+    T > 22.
+
+action(set_hvac_energy_saving) :-
+    all_occupants_away.
+
+action(turn_off_hvac(Zone)) :-
+    windows_open(Zone).
+
+Rule Set 3 – Security & Safety
+action(sound_alarm_and_intrusion_alert) :-
+    door_open(front_door),
+    time_between(23, 6),
+    security_armed.
+
+action(fire_emergency_protocol) :-
+    smoke_detector_triggered.
+
+action(record_camera_and_send_clip) :-
+    motion_detected(near_windows),
+    home_mode(away).
+
+action(shut_water_and_alert) :-
+    water_leak_detected(basement).
+
+action(send_garage_door_reminder) :-
+    garage_door_open(Time),
+    Time > 30.
+
+Rule Set 4 – Appliance & Device Management
+action(laundry_finished_notifications) :-
+    washing_machine_finished,
+    no_one_home.
+
+action(turn_off_kids_tv_after_warning) :-
+    time(21, 0),
+    weekday,
+    tv_on(kids_bedroom).
+
+action(start_brewing_coffee) :-
+    coffee_scheduled(7, 0),
+    motion_detected(kitchen),
+    time(6, 45).
+
+action(turn_off_oven_and_alert) :-
+    oven_on(Duration),
+    Duration > 120.
+
+action(open_blinds_gradually) :-
+    blinds_scheduled(sunrise),
+    motion_detected(bedroom).
+
+Rule Set 5 – Energy Saving & Scenes
+action(activate_away_like_mode) :-
+    no_motion_any_room(30),
+    system_mode(home).
+
+action(defer_non_essential_devices) :-
+    peak_tariff_hours.
+
+action(movie_night_scene) :-
+    scene_activated(movie_night).
+
+action(good_night_scene) :-
+    scene_activated(good_night).
+
+action(morning_scene) :-
+    scene_activated(morning).
+
+Rule Set 6 – User Preference & Learning
+action(learn_thermostat_pattern) :-
+    manual_thermostat_set(23),
+    weekday,
+    time(18, 0).
+
+action(reduce_motion_sensitivity(Room)) :-
+    lights_auto_on(Room),
+    lights_manually_turned_off(Room).
+
+action(welcome_home_scene) :-
+    user_arriving_home.
+
+action(prewarm_bathroom) :-
+    early_morning_alarm_set.
+
+action(close_windows_and_notify) :-
+    rain_predicted(1),
+    windows_open.
